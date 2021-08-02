@@ -1,0 +1,17 @@
+<div class="row">
+    <h1>Action</h1>
+    <table>
+        <tr>
+        <th>type</th>
+        <th>cost</th>
+        <th>when</th>
+        </tr>
+        {{#each action}}
+        <tr>
+            <td>{{type}}</td>
+            <td>{{cost}}</td>
+            <td>{{timestamp}}</td>
+        </tr>
+        {{/each}}
+    </table>
+</div>

@@ -1,27 +1,29 @@
 const express = require("express")
 const exphbs = require('express-handlebars');
-const bodyParser = require("body-parser")
+
 const SettingsBill = require("./settings-bill")
 
 const app = express();
 const settingsBill = SettingsBill()
 // configer handlebars
-app.engine('handlebars', exphbs({ defaultLayout: false }));
+app.engine('handlebars', exphbs({ layoutsDir: "views/layout/" }));
 app.set('view engine', 'handlebars');
 
 // make public folder visiable
-app.use(express.static("public"))
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json())
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+
 // parse application/json
-app.use(bodyParser.json())
+
 
 app.get("/", function (req, res) {
     res.render("index", {
         settings: settingsBill.getSettings(),
         Totals: settingsBill.totals(),
-        
+
 
        
     });

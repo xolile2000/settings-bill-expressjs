@@ -14,15 +14,14 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json())
 
-// parse application/x-www-form-urlencoded
 
-// parse application/json
 
 
 app.get("/", function (req, res) {
     res.render("index", {
         settings: settingsBill.getSettings(),
         Totals: settingsBill.totals(),
+
 
 
        
@@ -54,9 +53,10 @@ res.render("actions", {actions : settingsBill.actions()});
 
 })
 
-app.get("/actions:actionType", function (req, res) {
-    const actionType = req.params.actionType
-    res.render("actions", {actions : settingsBill.actionsfor(actionType)});
+app.get("/actions/:actionType", function (req, res) {
+    const actionType = req.params.actionType;
+    res.render("actions", {actions : settingsBill.actionsFor(actionType)});
+   
 })
 
 const PORT = process.env.PORT || 3011

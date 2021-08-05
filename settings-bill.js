@@ -63,7 +63,9 @@ module.exports = function SettingsBill() {
     }
 
     function getTotal(type) {
+       
 
+        
         let total = 0;
         // loop through all the entries in the action list 
         for (let index = 0; index < actionList.length; index++) {
@@ -77,6 +79,7 @@ module.exports = function SettingsBill() {
             }
 
         }
+    
         // console.log(total)
         return total;
 
@@ -115,6 +118,7 @@ module.exports = function SettingsBill() {
         const total = grandTotal();
         return total >= criticalLevel;
     }
+    
 
     return {
         setSettings,
@@ -125,6 +129,8 @@ module.exports = function SettingsBill() {
         totals,
         hasReachedWarningLevel,
         hasReachedCriticalLevel,
-        getTotal
+        getTotal,
+       
+
     }
 }

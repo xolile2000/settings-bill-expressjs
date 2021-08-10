@@ -23,8 +23,8 @@ app.get("/", function (req, res) {
     res.render("index", {
         settings: settingsBill.getSettings(),
         Totals: settingsBill.totals(),
-       
-      
+       warningLevel:  settingsBill.colorLevel(),
+       criticalLevel:  settingsBill.colorLevel()
 
 
        
@@ -46,7 +46,7 @@ app.post("/settings", function (req, res) {
 
 app.post("/action", function (req, res) {
     settingsBill.recordAction(req.body.actionType)
-    
+  
  
    
     res.redirect("/");
@@ -54,10 +54,11 @@ app.post("/action", function (req, res) {
  
 app.get("/actions", function (req, res) {
     var actionList = settingsBill.actions()
+    var color = settingsBill.colorLevel()
     actionList.forEach(element => {
-        actionList.currentTime = moment(element.timestamp).fromNow()
+        element.currentTime = moment(element.timestamp).fromNow()
     });
-res.render("actions", {actions : actionList});
+res.render("actions", {actions : actionList , color});
 
 })
 
@@ -66,13 +67,13 @@ app.get("/actions/:actionType", function (req, res) {
 
     var actionList = settingsBill.actionsFor(actionType)
     actionList.forEach(element => {
-        actionList.currentTime = moment(element.timestamp).fromNow()
+        element.currentTime = moment(element.timestamp).fromNow()
     });
     res.render("actions", {actions : settingsBill.actionsFor(actionType)});
    
 })
 
-const PORT = process.env.PORT || 3011
+const PORT = process.env.PORT || 3012
 
 app.listen(PORT, function () {
     console.log("App started at port", PORT)

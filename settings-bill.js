@@ -1,8 +1,8 @@
 module.exports = function SettingsBill() {
-    let smsCost = 0;
-    let callCost = 0;
-    let warningLevel = 0;
-    let criticalLevel = 0; 
+    let smsCost = 0
+    let callCost = 0
+    let warningLevel 
+    let criticalLevel 
 
     let actionList = [];
 
@@ -24,6 +24,9 @@ module.exports = function SettingsBill() {
     }
 
     function recordAction(action) {
+        if (!hasReachedCriticalLevel()) {
+
+        
         let cost = 0;
         if (action === 'sms'){
             cost = smsCost;
@@ -37,6 +40,7 @@ module.exports = function SettingsBill() {
             cost,
             timestamp: new Date()
         });
+    }
     }
     
 
@@ -63,7 +67,9 @@ module.exports = function SettingsBill() {
     }
 
     function getTotal(type) {
+       
 
+        
         let total = 0;
         // loop through all the entries in the action list 
         for (let index = 0; index < actionList.length; index++) {
@@ -77,6 +83,7 @@ module.exports = function SettingsBill() {
             }
 
         }
+    
         // console.log(total)
         return total;
 
@@ -99,7 +106,8 @@ module.exports = function SettingsBill() {
         return {
             smsTotal,
             callTotal,
-            grandTotal : grandTotal().toFixed(2)
+            grandTotal : grandTotal().toFixed(2),
+            color : colorLevel()
         }
     }
 
@@ -116,6 +124,26 @@ module.exports = function SettingsBill() {
         return total >= criticalLevel;
     }
 
+    function colorLevel(){
+    
+        if( hasReachedWarningLevel()){
+            return "warning"
+        }  
+         else if(hasReachedCriticalLevel()){
+            return "critical"
+        }
+        
+        
+        
+    }
+    function levelReached(){
+        if(grandTotal() >= hasReachedCriticalLevel()){
+            return;
+        }
+    }
+
+    
+
     return {
         setSettings,
         getSettings,
@@ -125,6 +153,10 @@ module.exports = function SettingsBill() {
         totals,
         hasReachedWarningLevel,
         hasReachedCriticalLevel,
-        getTotal
+        getTotal,
+        colorLevel,
+        levelReached
+       
+
     }
 }

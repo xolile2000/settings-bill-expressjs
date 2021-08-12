@@ -1,7 +1,9 @@
 const express = require("express")
 const exphbs = require('express-handlebars');
 
-const SettingsBill = require("./settings-bill")
+const SettingsBill = require("./settings-bill");
+const moment = require('moment');
+moment().format() // require
 
 const app = express();
 const settingsBill = SettingsBill()
@@ -21,7 +23,8 @@ app.get("/", function (req, res) {
     res.render("index", {
         settings: settingsBill.getSettings(),
         Totals: settingsBill.totals(),
-
+       warningLevel:  settingsBill.colorLevel(),
+       criticalLevel:  settingsBill.colorLevel()
 
 
        
@@ -44,22 +47,33 @@ app.post("/settings", function (req, res) {
 app.post("/action", function (req, res) {
     settingsBill.recordAction(req.body.actionType)
   
-    
-    res.redirect("/")
-});
-
+ 
+   
+    res.redirect("/");
+})
+ 
 app.get("/actions", function (req, res) {
-res.render("actions", {actions : settingsBill.actions()});
+    var actionList = settingsBill.actions()
+    var color = settingsBill.colorLevel()
+    actionList.forEach(element => {
+        element.currentTime = moment(element.timestamp).fromNow()
+    });
+res.render("actions", {actions : actionList , color});
 
 })
 
 app.get("/actions/:actionType", function (req, res) {
     const actionType = req.params.actionType;
+
+    var actionList = settingsBill.actionsFor(actionType)
+    actionList.forEach(element => {
+        element.currentTime = moment(element.timestamp).fromNow()
+    });
     res.render("actions", {actions : settingsBill.actionsFor(actionType)});
    
 })
 
-const PORT = process.env.PORT || 3011
+const PORT = process.env.PORT || 3012
 
 app.listen(PORT, function () {
     console.log("App started at port", PORT)

@@ -9,8 +9,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "mocha"
+    "test": "mocha",
+    "start": "node index.js"
+
   },
   "keywords": [],
   "author": "",
